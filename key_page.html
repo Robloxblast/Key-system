@@ -37,6 +37,56 @@
             font-size: 2.5em;
         }
 
+        .step-container {
+            margin: 30px 0;
+        }
+
+        .step {
+            background: #f7f7f7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-success {
+            background: #48bb78;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .hidden {
+            display: none;
+        }
+
         .key-box {
             background: #f7f7f7;
             border: 2px dashed #667eea;
@@ -47,6 +97,22 @@
             font-weight: bold;
             color: #333;
             word-break: break-all;
+        }
+
+        .copy-btn {
+            background: #4299e1;
+            font-size: 0.9em;
+            padding: 10px 20px;
+        }
+
+        .copy-btn:hover {
+            background: #3182ce;
+        }
+
+        .success {
+            color: #48bb78;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         .instructions {
@@ -71,114 +137,78 @@
             line-height: 1.6;
         }
 
-        .btn {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1em;
-            margin: 10px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: #764ba2;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-secondary {
-            background: #48bb78;
-        }
-
-        .btn-secondary:hover {
-            background: #38a169;
-        }
-
-        .copy-btn {
-            background: #4299e1;
-            font-size: 0.9em;
-            padding: 10px 20px;
-            margin-top: 10px;
-        }
-
-        .copy-btn:hover {
-            background: #3182ce;
-        }
-
-        .footer {
-            margin-top: 30px;
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .loading {
-            display: none;
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
             margin: 20px 0;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .success {
-            color: #48bb78;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .error {
-            color: #f56565;
-            font-weight: bold;
-            margin-top: 10px;
+            color: #856404;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔐 Your Key is Ready!</h1>
+        <!-- Step 1: Initial view -->
+        <div id="step1">
+            <h1>🔐 Get Your Premium Key</h1>
 
-        <div class="key-box" id="keyDisplay">
-            Loading your key...
+            <div class="step-container">
+                <div class="step">
+                    <h3>📋 Step 1: Complete Verification</h3>
+                    <p>Click the button below to complete a quick verification. This helps support the bot!</p>
+                </div>
+
+                <div class="step">
+                    <h3>🔑 Step 2: Get Your Key</h3>
+                    <p>After completing the verification, you'll receive your premium key instantly.</p>
+                </div>
+
+                <div class="step">
+                    <h3>💎 Step 3: Redeem in Discord</h3>
+                    <p>Use the key in Discord to unlock premium features!</p>
+                </div>
+            </div>
+
+            <div class="warning">
+                ⚠️ <strong>Important:</strong> You must complete the verification to receive your key. Don't close this page!
+            </div>
+
+            <!-- This link will be intercepted by Linkvertise -->
+            <a href="https://robloxblast.github.io/key-system/reveal.html" class="btn" id="verifyBtn">
+                🚀 Start Verification
+            </a>
         </div>
 
-        <button class="btn copy-btn" onclick="copyKey()">📋 Copy Key</button>
-        <div id="copyStatus"></div>
+        <!-- Step 2: Key revealed (shown after Linkvertise) -->
+        <div id="step2" class="hidden">
+            <h1>🎉 Verification Complete!</h1>
 
-        <div class="instructions">
-            <h3>📝 How to Use Your Key:</h3>
-            <ol>
-                <li>Copy the key above</li>
-                <li>Go back to Discord</li>
-                <li>Use the command: <code>/checkkey key:YOUR-KEY</code></li>
-                <li>Then use: <code>/redeemkey key:YOUR-KEY</code></li>
-                <li>Enjoy your premium access! 🎉</li>
-            </ol>
-        </div>
+            <div class="key-box" id="keyDisplay">
+                Loading your key...
+            </div>
 
-        <a href="https://discord.com/channels/@me" class="btn btn-secondary">
-            💬 Back to Discord
-        </a>
+            <button class="btn copy-btn" onclick="copyKey()">📋 Copy Key</button>
+            <div id="copyStatus"></div>
 
-        <div class="footer">
-            <p>⏰ This key expires in 1 hour</p>
-            <p>Need help? Contact support in Discord</p>
+            <div class="instructions">
+                <h3>📝 How to Use Your Key:</h3>
+                <ol>
+                    <li>Copy the key above</li>
+                    <li>Go back to Discord</li>
+                    <li>Use the command: <code>/checkkey key:YOUR-KEY</code></li>
+                    <li>Then use: <code>/redeemkey key:YOUR-KEY</code></li>
+                    <li>Enjoy your premium access! 🎉</li>
+                </ol>
+            </div>
+
+            <a href="https://discord.com/channels/@me" class="btn btn-success">
+                💬 Back to Discord
+            </a>
+
+            <div style="margin-top: 20px; color: #666; font-size: 0.9em;">
+                <p>⏰ This key expires in 1 hour</p>
+            </div>
         </div>
     </div>
 
@@ -186,50 +216,109 @@
     <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
     <script>
         linkvertise(933898, {
-            whitelist: ["https://www.youtube.com/@Robloxblast"],
+            whitelist: [],  // Empty whitelist means ALL external links are monetized
             blacklist: []
         });
     </script>
 
     <script>
-        // Get key from URL parameter
-        function getKeyFromURL() {
+        // Get session and user from URL parameters
+        function getURLParams() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('key');
+            return {
+                session: urlParams.get('session'),
+                user: urlParams.get('user'),
+                verified: urlParams.get('verified')
+            };
         }
 
-        // Display the key
-        function displayKey() {
-            const key = getKeyFromURL();
+        // Check if user came from Linkvertise (reveal.html)
+        function checkIfVerified() {
+            const params = getURLParams();
+            return params.verified === 'true';
+        }
+
+        // Display instructions for completing verification
+        function displayInstructions() {
+            const params = getURLParams();
             const keyDisplay = document.getElementById('keyDisplay');
 
-            if (key) {
-                keyDisplay.textContent = key;
+            if (params.session && params.user) {
+                keyDisplay.innerHTML = `
+                    <div style="text-align: left; font-size: 0.9em;">
+                        <p style="margin-bottom: 15px; color: #667eea;">✅ <strong>Linkvertise Completed!</strong></p>
+                        <p style="margin-bottom: 10px;">Now go back to Discord and use this command:</p>
+                        <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; color: #333; font-size: 0.85em;">
+                            /completeverify session:${params.session}
+                        </div>
+                        <p style="color: #666; font-size: 0.85em; margin-top: 10px;">
+                            This will generate your key and send it to you in Discord!
+                        </p>
+                    </div>
+                `;
             } else {
-                keyDisplay.textContent = 'No key found. Please use /getkey in Discord.';
-                keyDisplay.style.color = '#f56565';
+                keyDisplay.innerHTML = '<p style="color: #f56565;">Invalid link. Please use /getkey in Discord.</p>';
             }
         }
 
-        // Copy key to clipboard
+        // Copy command to clipboard
         function copyKey() {
-            const key = getKeyFromURL();
+            const params = getURLParams();
             const copyStatus = document.getElementById('copyStatus');
+            const command = `/completeverify session:${params.session}`;
 
-            if (key) {
-                navigator.clipboard.writeText(key).then(() => {
-                    copyStatus.innerHTML = '<p class="success">✅ Key copied to clipboard!</p>';
+            if (params.session) {
+                navigator.clipboard.writeText(command).then(() => {
+                    copyStatus.innerHTML = '<p class="success">✅ Command copied to clipboard!</p>';
                     setTimeout(() => {
                         copyStatus.innerHTML = '';
                     }, 3000);
                 }).catch(() => {
-                    copyStatus.innerHTML = '<p class="error">❌ Failed to copy. Please copy manually.</p>';
+                    copyStatus.innerHTML = '<p style="color: #f56565;">❌ Failed to copy. Please copy manually.</p>';
                 });
             }
         }
 
+        // Update the reveal link with session and user parameters
+        function updateVerifyLink() {
+            const params = getURLParams();
+            const verifyBtn = document.getElementById('verifyBtn');
+
+            if (params.session && params.user) {
+                const revealURL = `https://robloxblast.github.io/Key-system/reveal.html?session=${params.session}&user=${params.user}`;
+                verifyBtn.href = revealURL;
+            }
+        }
+
         // Initialize on page load
-        window.onload = displayKey;
+        window.onload = function() {
+            const params = getURLParams();
+
+            if (!params.session || !params.user) {
+                // Invalid link
+                document.getElementById('step1').innerHTML = `
+                    <h1>❌ Invalid Link</h1>
+                    <p style="color: #666; margin: 20px 0;">This link is invalid or expired.</p>
+                    <p style="color: #667eea; font-weight: bold;">Please use <code>/getkey</code> in Discord to get a new link.</p>
+                `;
+                return;
+            }
+
+            if (checkIfVerified()) {
+                // User completed Linkvertise, show instructions
+                document.getElementById('step1').classList.add('hidden');
+                document.getElementById('step2').classList.remove('hidden');
+                displayInstructions();
+
+                // Update button text
+                document.querySelector('.copy-btn').textContent = '📋 Copy Command';
+            } else {
+                // Show verification step
+                updateVerifyLink();
+                document.getElementById('step1').classList.remove('hidden');
+                document.getElementById('step2').classList.add('hidden');
+            }
+        };
     </script>
 </body>
 </html>
