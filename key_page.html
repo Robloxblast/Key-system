@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Your Key</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .key-box {
+            background: #f7f7f7;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .instructions {
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: #48bb78;
+        }
+
+        .btn-secondary:hover {
+            background: #38a169;
+        }
+
+        .copy-btn {
+            background: #4299e1;
+            font-size: 0.9em;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #3182ce;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success {
+            color: #48bb78;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: #f56565;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Your Key is Ready!</h1>
+
+        <div class="key-box" id="keyDisplay">
+            Loading your key...
+        </div>
+
+        <button class="btn copy-btn" onclick="copyKey()">📋 Copy Key</button>
+        <div id="copyStatus"></div>
+
+        <div class="instructions">
+            <h3>📝 How to Use Your Key:</h3>
+            <ol>
+                <li>Copy the key above</li>
+                <li>Go back to Discord</li>
+                <li>Use the command: <code>/checkkey key:YOUR-KEY</code></li>
+                <li>Then use: <code>/redeemkey key:YOUR-KEY</code></li>
+                <li>Enjoy your premium access! 🎉</li>
+            </ol>
+        </div>
+
+        <a href="https://discord.com/channels/@me" class="btn btn-secondary">
+            💬 Back to Discord
+        </a>
+
+        <div class="footer">
+            <p>⏰ This key expires in 1 hour</p>
+            <p>Need help? Contact support in Discord</p>
+        </div>
+    </div>
+
+    <!-- Linkvertise Full Script API -->
+    <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
+    <script>
+        linkvertise(933898, {
+            whitelist: ["https://www.youtube.com/@Robloxblast"],
+            blacklist: []
+        });
+    </script>
+
+    <script>
+        // Get key from URL parameter
+        function getKeyFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('key');
+        }
+
+        // Display the key
+        function displayKey() {
+            const key = getKeyFromURL();
+            const keyDisplay = document.getElementById('keyDisplay');
+
+            if (key) {
+                keyDisplay.textContent = key;
+            } else {
+                keyDisplay.textContent = 'No key found. Please use /getkey in Discord.';
+                keyDisplay.style.color = '#f56565';
+            }
+        }
+
+        // Copy key to clipboard
+        function copyKey() {
+            const key = getKeyFromURL();
+            const copyStatus = document.getElementById('copyStatus');
+
+            if (key) {
+                navigator.clipboard.writeText(key).then(() => {
+                    copyStatus.innerHTML = '<p class="success">✅ Key copied to clipboard!</p>';
+                    setTimeout(() => {
+                        copyStatus.innerHTML = '';
+                    }, 3000);
+                }).catch(() => {
+                    copyStatus.innerHTML = '<p class="error">❌ Failed to copy. Please copy manually.</p>';
+                });
+            }
+        }
+
+        // Initialize on page load
+        window.onload = displayKey;
+    </script>
+</body>
+</html>
