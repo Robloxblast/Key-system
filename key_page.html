@@ -222,13 +222,14 @@
     </script>
 
     <script>
-        // Get session and user from URL parameters
+        // Get session, user, and token from URL parameters
         function getURLParams() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
                 session: urlParams.get('session'),
                 user: urlParams.get('user'),
-                verified: urlParams.get('verified')
+                verified: urlParams.get('verified'),
+                token: urlParams.get('token')  // Linkvertise verification token
             };
         }
 
@@ -244,18 +245,34 @@
             const keyDisplay = document.getElementById('keyDisplay');
 
             if (params.session && params.user) {
-                keyDisplay.innerHTML = `
-                    <div style="text-align: left; font-size: 0.9em;">
-                        <p style="margin-bottom: 15px; color: #667eea;">✅ <strong>Linkvertise Completed!</strong></p>
-                        <p style="margin-bottom: 10px;">Now go back to Discord and use this command:</p>
-                        <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; color: #333; font-size: 0.85em;">
-                            /completeverify session:${params.session}
+                // Check if we have a token (means Linkvertise was completed)
+                if (params.token) {
+                    keyDisplay.innerHTML = `
+                        <div style="text-align: left; font-size: 0.9em;">
+                            <p style="margin-bottom: 15px; color: #667eea;">✅ <strong>Linkvertise Completed!</strong></p>
+                            <p style="margin-bottom: 10px;">Now go back to Discord and use this command:</p>
+                            <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; color: #333; font-size: 0.85em; word-break: break-all;">
+                                /completeverify session:${params.session} token:${params.token}
+                            </div>
+                            <p style="color: #666; font-size: 0.85em; margin-top: 10px;">
+                                This will verify your completion and generate your key!
+                            </p>
                         </div>
-                        <p style="color: #666; font-size: 0.85em; margin-top: 10px;">
-                            This will generate your key and send it to you in Discord!
-                        </p>
-                    </div>
-                `;
+                    `;
+                } else {
+                    // No token - they might have bypassed Linkvertise
+                    keyDisplay.innerHTML = `
+                        <div style="text-align: left; font-size: 0.9em;">
+                            <p style="margin-bottom: 15px; color: #f56565;">⚠️ <strong>No Verification Token Found!</strong></p>
+                            <p style="margin-bottom: 10px; color: #666;">
+                                It looks like you didn't complete the Linkvertise steps properly.
+                            </p>
+                            <p style="color: #666; font-size: 0.85em;">
+                                Please go back to Discord and use <code>/getkey</code> again, then complete ALL Linkvertise steps.
+                            </p>
+                        </div>
+                    `;
+                }
             } else {
                 keyDisplay.innerHTML = '<p style="color: #f56565;">Invalid link. Please use /getkey in Discord.</p>';
             }
@@ -265,9 +282,10 @@
         function copyKey() {
             const params = getURLParams();
             const copyStatus = document.getElementById('copyStatus');
-            const command = `/completeverify session:${params.session}`;
 
-            if (params.session) {
+            if (params.token) {
+                const command = `/completeverify session:${params.session} token:${params.token}`;
+
                 navigator.clipboard.writeText(command).then(() => {
                     copyStatus.innerHTML = '<p class="success">✅ Command copied to clipboard!</p>';
                     setTimeout(() => {
@@ -276,6 +294,8 @@
                 }).catch(() => {
                     copyStatus.innerHTML = '<p style="color: #f56565;">❌ Failed to copy. Please copy manually.</p>';
                 });
+            } else {
+                copyStatus.innerHTML = '<p style="color: #f56565;">❌ No token available. Please complete Linkvertise properly.</p>';
             }
         }
 
