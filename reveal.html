@@ -88,12 +88,13 @@
     </div>
 
     <script>
-        // Get the session and user from URL parameters
+        // Get the session, user, and token from URL parameters
         function getURLParams() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
                 session: urlParams.get('session'),
-                user: urlParams.get('user')
+                user: urlParams.get('user'),
+                token: urlParams.get('token')  // Linkvertise adds this after completion
             };
         }
 
@@ -104,8 +105,15 @@
             // Wait 2 seconds then redirect back
             setTimeout(() => {
                 if (params.session && params.user) {
-                    // Redirect back to the key page with verified=true
-                    window.location.href = `https://robloxblast.github.io/Key-system/key_page.html?session=${params.session}&user=${params.user}&verified=true`;
+                    // Redirect back to the key page with verified=true and token
+                    let redirectUrl = `https://robloxblast.github.io/Key-system/key_page.html?session=${params.session}&user=${params.user}&verified=true`;
+
+                    // Add token if it exists (Linkvertise provides this)
+                    if (params.token) {
+                        redirectUrl += `&token=${params.token}`;
+                    }
+
+                    window.location.href = redirectUrl;
                 } else {
                     // No session found, redirect to Discord
                     window.location.href = 'https://discord.com/channels/@me';
